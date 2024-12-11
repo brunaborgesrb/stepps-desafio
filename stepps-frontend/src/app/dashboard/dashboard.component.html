@@ -1,0 +1,29 @@
+<div class="corpo">
+  <div class="dashboard">
+    
+    <header class="header">
+      <h1>Stepps</h1>
+      <div class="user-info">
+        <i class="fas fa-user-circle"></i>
+        <span>{{ userName }}</span>
+        <button (click)="logout()" class="logout-btn">
+          <i class="fas fa-sign-out-alt"></i> </button>
+      </div>
+    </header>
+  
+    <div class="indicators">
+      <div class="indicator-card" *ngFor="let indicator of indicators">
+        <h3>{{ indicator.name }}</h3>
+        <p>{{ indicator.value }}</p>
+      </div>
+    </div>
+  
+    <div class="chart">
+      <h3>Number of Alerts per Hour</h3>
+      <canvas id="alertsChart"></canvas>
+    </div>
+  </div>
+  
+  <footer class="footer">
+    <p>&copy; 2024 Stepps. All rights reserved.</p>
+  </footer>
