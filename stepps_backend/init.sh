@@ -4,9 +4,8 @@
 echo "Esperando o banco de dados iniciar..."
 wait-for-it db:5432 --timeout=60 --strict -- echo "Banco de dados pronto!"
 
-# Aplica as migrações
 echo "Aplicando as migrações do banco de dados..."
-python manage.py migrate
+python manage.py migrate || { echo "Erro nas migrações"; exit 1; }
 
 # Cria o superusuário (caso não exista)
 echo "Criando superusuário..."
