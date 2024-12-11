@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./stepps-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./stepps_backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db  # O backend depende do banco de dados
+    volumes:
+      - ./stepps_backend:/app
+    env_file:
+      - .env
+    command: >
+      sh -c "until pg_isready -h db -p 5432; do
+             echo 'Waiting for database...';
+             sleep 2;
+           done &&
+           python manage.py migrate &&
+           python manage.py runserver 0.0.0.0:8000"
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: stepps_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
